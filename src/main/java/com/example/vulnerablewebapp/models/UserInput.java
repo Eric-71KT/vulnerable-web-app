@@ -1,46 +1,30 @@
 package com.example.vulnerablewebapp.models;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
-public class UserDatabase {
+@Controller
+public class UserInputController {
+    private String name;
 
-    public String getUserById(String userId) {
-        String result = "";
-        Connection connection = null;
-        Statement statement = null;
+    public String getName() {
+        return name;
+    }
 
-        try {
-            // Connexion à la base de données (remplacez par vos informations)
-            connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/vulnerable_db", "root", "password"
-            );
+    public void setName(String name) {
+        this.name = name;
+    }
 
-            statement = connection.createStatement();
+    @GetMapping("/displayUserInput")
+    public String displayUserInput(@RequestParam("name") String name, Model model) {
+        // Stockage direct de l'entrée utilisateur sans validation (vulnérabilité)
+        setName(name);
 
-            // Requête SQL construite directement avec les données utilisateur (vulnérabilité)
-            String query = "SELECT * FROM users WHERE id = '" + userId + "'";
-            ResultSet resultSet = statement.executeQuery(query);
+        // Injection de l'entrée utilisateur dans le modèle, qui sera affiché dans une vue HTML
+        model.addAttribute("userInput", getName());
 
-            if (resultSet.next()) {
-                result = "User found: " + resultSet.getString("username");
-            } else {
-                result = "User not found";
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (statement != null) statement.close();
-                if (connection != null) connection.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return result;
+        return "userInputView"; // Vue où la valeur sera affichée
     }
 }

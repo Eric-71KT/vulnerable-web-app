@@ -15,21 +15,23 @@ pipeline {
         stage("SonarQube") {
             steps {
                 script {
-                    withSonarQubeEnv('SonarTP3') {
+                    withSonarQubeEnv('SonarQubeServer') {
                         sh 'mvn sonar:sonar'
                     }
                 }
             }
         }
 
-        stage("deploy & OWASP Dependency-Check") {
+        stage("Deploy & OWASP Dependency-Check") {
             steps {
                 dependencyCheck additionalArguments: '''
-                -o './'
-                -s './'
-                -f 'ALL'
-                --prettyPrint''', odcInstallation: 'owasp-dependency'
-                dependencyCheckPublisher pattern: 'dependency-check-report.html'
+                    -o './'
+                    -s './'
+                    -f 'ALL'
+                    --prettyPrint''', 
+                    odcInstallation: 'OWASP-Check'
+
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
 
@@ -40,4 +42,3 @@ pipeline {
         }
     }
 }
-

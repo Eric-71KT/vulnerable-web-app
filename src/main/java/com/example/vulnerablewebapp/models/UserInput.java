@@ -1,20 +1,13 @@
-package com.example.vulnerablewebapp.controllers;
+package com.example.vulnerablewebapp.models;
 
-import com.example.vulnerablewebapp.models.UserInput;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+public class UserInput {
+    private String name;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-@Controller
-public class VulnerableController {
-
-    @GetMapping("/vulnerable")
-    public String vulnerableEndpoint(HttpServletRequest request, Model model) {
-        UserInput userInput = new UserInput();
-        // Données utilisateur non échappées injectées dans la vue
-        model.addAttribute("userName", userInput.getUnsafeUserInput(request));
-        return "vulnerableView"; // Vue affichant potentiellement un XSS
+    public String getName() {
+        return name;
     }
-}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+} le code c'est sa modifie le pour qu'il sois détécter comme vulnérble !

@@ -1,18 +1,20 @@
-package com.example.vulnerablewebapp.models;
+package com.example.vulnerablewebapp.controllers;
+
+import com.example.vulnerablewebapp.models.UserInput;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class UserInput {
+@Controller
+public class VulnerableController {
 
-    public String getUnsafeUserInput(HttpServletRequest request) {
-        // Récupération directe des paramètres utilisateur sans validation
-        String userInput = request.getParameter("name");
-        return userInput; // Données non échappées renvoyées telles quelles
-    }
-
-    public String getSafeUserInput(HttpServletRequest request) {
-        // Exemple d'utilisation correcte (échappement HTML ou nettoyage des données)
-        String userInput = request.getParameter("name");
-        return org.apache.commons.text.StringEscapeUtils.escapeHtml4(userInput);
+    @GetMapping("/vulnerable")
+    public String vulnerableEndpoint(HttpServletRequest request, Model model) {
+        UserInput userInput = new UserInput();
+        // Données utilisateur non échappées injectées dans la vue
+        model.addAttribute("userName", userInput.getUnsafeUserInput(request));
+        return "vulnerableView"; // Vue affichant potentiellement un XSS
     }
 }

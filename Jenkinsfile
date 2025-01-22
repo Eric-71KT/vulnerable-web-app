@@ -15,7 +15,7 @@ pipeline {
         stage("SonarQube") {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQubeServer') {
+                    withSonarQubeEnv('SonarTP3') {
                         sh 'mvn sonar:sonar'
                     }
                 }
@@ -29,7 +29,7 @@ pipeline {
                     -s './'
                     -f 'ALL'
                     --prettyPrint''', 
-                    odcInstallation: 'OWASP-Check'
+                    odcInstallation: 'owasp'
 
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }

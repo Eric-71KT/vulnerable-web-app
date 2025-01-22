@@ -29,7 +29,7 @@ pipeline {
                 -s './'
                 -f 'ALL'
                 --prettyPrint''', odcInstallation: 'owasp-dependency'
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                dependencyCheckPublisher pattern: 'dependency-check-report.html'
             }
         }
 
@@ -40,3 +40,4 @@ pipeline {
         }
     }
 }
+
